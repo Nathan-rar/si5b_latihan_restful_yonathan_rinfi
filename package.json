@@ -6,19 +6,30 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "newman run postman_collection.json"
+    "test": "npm run test:unit",
+    "test:unit": "mocha --timeout 120000 \"test/**/*.test.js\"",
+    "test:postman": "newman run postman_collection.json -e postman_environment.json --env-var base_url=http://localhost:3000"
   },
   "keywords": [
     "express",
     "restful-api",
-    "meeting-reservations"
+    "meeting-reservations",
+    "mongodb",
+    "postman"
   ],
   "author": "Yonathan Rinfi",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "dotenv": "^18.0.9",
+    "express": "^5.2.1",
+    "mongoose": "^9.11.4"
   },
   "devDependencies": {
+    "chai": "^6.3.0",
+    "chai-http": "^5.2.1",
+    "mocha": "^12.0.3",
+    "mongodb-memory-server": "^11.3.0",
+    "newman": "^6.2.3",
     "nodemon": "^3.1.10"
   },
   "engines": {

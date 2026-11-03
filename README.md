@@ -53,6 +53,14 @@ Server lokal berjalan di `http://localhost:3000`.
 - Postman: koleksi `postman_collection.json` (11 request, 19 assertion; hasil terbaru 19/19 lulus).
 - Thunder Client: `thunder-collection.json` berisi request validasi 400 dan endpoint 404. Import file tersebut ke VS Code.
 
-## Catatan
+## Tugas 3 — Integrasi MongoDB (2026-11)
+
+- Mengganti penyimpanan array sementara dengan MongoDB + Mongoose.
+- Menambahkan schema `Customer` dan `MeetingReservation`: reservasi menyimpan `customerId` reference dan snapshot embedded `pemesan`.
+- Menambahkan filter, pagination, sorting, projection pada endpoint daftar.
+- Menambahkan pengujian integrasi in-memory; koneksi Atlas asli memerlukan konfigurasi `MONGODB_URI`.
+- Panduan: `README_TUGAS3.md`, `docs/SETUP_TUGAS3.md`.
+
+
 
 Karena penyimpanan menggunakan array dalam memori, perubahan data dapat kembali ke data awal setelah proses serverless Vercel berhenti atau dimulai ulang. Ini sesuai catatan tugas dan bukan penyimpanan permanen.

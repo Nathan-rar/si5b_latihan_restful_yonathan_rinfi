@@ -1,13 +1,13 @@
 {
   "info": {
-    "name": "Tugas 1 - Reservasi Ruang Rapat (Topik 28)",
-    "description": "Koleksi pengujian RESTful API Express.js untuk NIM 2428240101. Base URL memakai deployment Vercel produksi; ubah variable {{baseUrl}} ke URL lokal bila diperlukan.",
+    "name": "Tugas 3 - MongoDB Reservasi Ruang Rapat",
+    "description": "Tugas 3: API MongoDB. baseUrl menunjuk server lokal; jalankan server dengan MONGODB_URI sebelum koleksi.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://tugas1-restful-2428240101.vercel.app"
+      "value": "http://localhost:3000"
     }
   ],
   "item": [
@@ -50,10 +50,10 @@
       ]
     },
     {
-      "name": "GET - Reservasi berdasarkan ID",
+      "name": "GET - Filter Pagination Sorting Projection",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/meeting-reservations/1"
+        "url": "{{baseUrl}}/meeting-reservations?ruang=Ruang%20Kenanga&page=1&limit=5&sort=-tanggal&fields=ruang,tanggal,pemesan.nama"
       },
       "event": [
         {
@@ -61,8 +61,8 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('HTTP 200 - Detail reservasi', function () { pm.response.to.have.status(200); });",
-              "pm.test('ID reservasi benar', function () { pm.expect(pm.response.json().id).to.eql(1); });"
+              "pm.test('HTTP 200 - daftar paginasi', function () { pm.response.to.have.status(200); });",
+              "pm.test('Response memuat data dan pagination', function () { const d=pm.response.json(); pm.expect(d.data).to.be.an('array'); pm.expect(d.pagination.page).to.eql(1); pm.expect(d.pagination.limit).to.eql(5); });"
             ]
           }
         }
@@ -150,109 +150,6 @@
             "exec": [
               "pm.test('HTTP 400 - Validasi field wajib', function () { pm.response.to.have.status(400); });",
               "pm.test('Error response JSON', function () { pm.expect(pm.response.json().status).to.eql('error'); });"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "PUT - Perbarui reservasi (200)",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"namaPemesan\": \"PT Maju Digital Baru\",\n  \"ruang\": \"Ruang Kenanga\",\n  \"tanggal\": \"2026-10-05\",\n  \"jamMulai\": \"14:00\",\n  \"durasiJam\": 2\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": "{{baseUrl}}/meeting-reservations/1"
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('HTTP 200 - Reservasi diperbarui', function () { pm.response.to.have.status(200); });",
-              "pm.test('Nama hasil update benar', function () { pm.expect(pm.response.json().data.namaPemesan).to.eql('PT Maju Digital Baru'); });"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "PUT - ID tidak ditemukan (404)",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"namaPemesan\": \"PT Contoh\",\n  \"ruang\": \"Ruang Kenanga\",\n  \"tanggal\": \"2026-10-05\",\n  \"jamMulai\": \"13:00\",\n  \"durasiJam\": 2\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": "{{baseUrl}}/meeting-reservations/999"
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('HTTP 404 - ID tidak ditemukan', function () { pm.response.to.have.status(404); });"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "DELETE - Hapus reservasi (200)",
-      "request": {
-        "method": "DELETE",
-        "url": "{{baseUrl}}/meeting-reservations/3"
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('HTTP 200 - Reservasi dihapus', function () { pm.response.to.have.status(200); });"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "DELETE - ID tidak ditemukan (404)",
-      "request": {
-        "method": "DELETE",
-        "url": "{{baseUrl}}/meeting-reservations/999"
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('HTTP 404 - ID tidak ditemukan', function () { pm.response.to.have.status(404); });"
             ]
           }
         }
